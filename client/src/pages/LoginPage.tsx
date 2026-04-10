@@ -1,4 +1,5 @@
 import { useState, FormEvent } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
@@ -16,11 +17,15 @@ const LoginPage = (): JSX.Element => {
     setLocalError(null);
     try {
       await login(email, password);
-    } catch (error: any) {
-      if (error.code === 'ERR_NETWORK') {
-        setLocalError('Cannot connect to server. Make sure the server is running on port 5000.');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        if (err.code === 'ERR_NETWORK') {
+          setLocalError('Cannot connect to server. Make sure the server is running on port 5000.');
+        } else {
+          setLocalError((err.response?.data as { message?: string })?.message ?? 'Login failed');
+        }
       } else {
-        setLocalError(error.response?.data?.message || 'Login failed');
+        setLocalError('An unexpected error occurred.');
       }
     }
   };

@@ -50,7 +50,7 @@ const KanbanPage = (): JSX.Element => {
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
 
   // ── Fetch ─────────────────────────────────────────────────────────────────
-  const { data: applications = [], isLoading } = useQuery<Application[]>(
+  const { data: applications = [], isLoading, isError } = useQuery<Application[]>(
     'applications',
     getApplications,
     { refetchOnWindowFocus: false }
@@ -160,6 +160,18 @@ const KanbanPage = (): JSX.Element => {
             <div className="flex flex-col items-center gap-3">
               <div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#534AB7 transparent transparent transparent' }} />
               <p className="text-slate-400 text-sm">Loading applications…</p>
+            </div>
+          </div>
+        ) : isError ? (
+          <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: '#fef2f2' }}>
+              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="#dc2626" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+            </div>
+            <div className="text-center">
+              <p className="text-slate-700 font-semibold">Failed to load applications</p>
+              <p className="text-slate-400 text-sm mt-1">Check your connection or try refreshing the page.</p>
             </div>
           </div>
         ) : applications.length === 0 ? (

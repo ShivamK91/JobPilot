@@ -11,6 +11,8 @@ function getOpenAIClient(): OpenAI {
     openaiClient = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
       baseURL: 'https://api.groq.com/openai/v1',
+      timeout: 15_000, // 15 s — throws APIConnectionTimeoutError if API hangs
+      maxRetries: 1,   // retry once on transient failure, then fail fast
     });
   }
   return openaiClient;
@@ -90,7 +92,7 @@ export const generateResumeSuggestions = async (job: ParsedJob): Promise<string[
         content:
           'You are an expert resume writer. ' +
           "Return only a JSON object with a single key 'suggestions' " +
-          'containing an array of 4 resume bullet points ' +
+          'containing an array of exactly 5 resume bullet points ' +
           'tailored specifically to this job role and required skills. ' +
           'Each bullet must start with a strong action verb and include metrics.',
       },
@@ -106,9 +108,9 @@ export const generateResumeSuggestions = async (job: ParsedJob): Promise<string[
 
   const suggestions = toStringArray(parsed.suggestions);
 
-  if (suggestions.length === 0) {
+  if (suggestions.length < 3 || suggestions.length > 5) {
     throw new Error(
-      '[aiService] generateResumeSuggestions: No suggestions returned in response.'
+      `[aiService] generateResumeSuggestions: Expected 3–5 suggestions, got ${suggestions.length}.`
     );
   }
 

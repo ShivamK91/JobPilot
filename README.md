@@ -1,8 +1,8 @@
 # JobPilot
 
-A full-stack AI-powered job search co-pilot with a drag-and-drop kanban board.
+A full-stack AI-powered job search co-pilot with a drag-and-drop Kanban board.
 
-**Stack:** React + Vite + TypeScript + Tailwind (client) · Node.js + Express + TypeScript + MongoDB (server) · OpenAI GPT-4o-mini (AI)
+**Stack:** React + Vite + TypeScript + Tailwind (client) · Node.js + Express + TypeScript + MongoDB (server) · Groq `llama-3.3-70b-versatile` via OpenAI-compatible API (AI)
 
 ---
 
@@ -12,18 +12,15 @@ A full-stack AI-powered job search co-pilot with a drag-and-drop kanban board.
 
 - Node.js ≥ 18
 - A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) connection string (or local MongoDB)
-- An [OpenAI API key](https://platform.openai.com/api-keys)
+- A [Groq API key](https://console.groq.com) (free tier available — used for AI job description parsing)
 
 ---
 
 ### 1. Clone & Install
 
 ```bash
-# Install server dependencies
-cd server && npm install
-
-# Install client dependencies
-cd ../client && npm install
+# From the repo root — install all dependencies
+cd server && npm install && cd ../client && npm install && cd ..
 ```
 
 ### 2. Configure Environment Variables
@@ -32,24 +29,26 @@ cd ../client && npm install
 
 ```bash
 cp server/.env.example server/.env
+# Then fill in your values
 ```
 
 | Variable | Description |
 |---|---|
 | `MONGO_URI` | Full MongoDB connection string (e.g. `mongodb+srv://user:pass@cluster.mongodb.net/job-tracker`) |
-| `JWT_SECRET` | A long, random secret string for signing JWTs (e.g. `openssl rand -hex 32`) |
-| `OPENAI_API_KEY` | Your OpenAI API key — used for job description parsing and resume suggestions |
+| `JWT_SECRET` | A long, random secret string for signing JWTs — generate with `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"` |
+| `OPENAI_API_KEY` | Your **Groq** API key from [console.groq.com](https://console.groq.com) — the server uses Groq's OpenAI-compatible endpoint |
 | `PORT` | Port the Express server listens on (default: `5000`) |
 
 #### Client — `client/.env`
 
 ```bash
 cp client/.env.example client/.env
+# Defaults to http://localhost:5000 — change only if your server runs on a different port
 ```
 
 | Variable | Description |
 |---|---|
-| `VITE_API_URL` | Base URL of the running server (default: `http://localhost:5000`) |
+| `VITE_API_URL` | Base URL of the running Express server (default: `http://localhost:5000`) |
 
 ---
 
@@ -62,7 +61,7 @@ Open two terminals:
 cd server
 npm run dev
 
-# Terminal 2 — React client (http://localhost:3000)
+# Terminal 2 — React client (http://localhost:5173)
 cd client
 npm run dev
 ```
@@ -89,11 +88,20 @@ Health check: `http://localhost:5000/api/health`
 
 ### Why is AI logic in a service layer (`aiService.ts`) and not in the controller?
 
-Controllers should only handle HTTP concerns — parsing request bodies, calling business logic, and writing responses. The OpenAI API calls involve prompt engineering, JSON parsing, and error handling that have nothing to do with HTTP. By isolating them in `aiService.ts`, the logic is:
+Controllers should only handle HTTP concerns — parsing request bodies, calling business logic, and writing responses. The AI API calls involve prompt engineering, JSON parsing, defensive validation, and error handling that have nothing to do with HTTP. By isolating them in `aiService.ts`, the logic is:
 
 - **Testable in isolation** — you can unit-test `parseJobDescription()` without spinning up Express
 - **Reusable** — both `parsedJob` and `resumeSuggestions` are generated in a single controller call, but the service functions can be composed independently
-- **Replaceable** — switching from OpenAI to another provider only requires editing the service, not the routes or controllers
+- **Replaceable** — switching from Groq to any other OpenAI-compatible provider only requires editing the service, not the routes or controllers
+
+### Why Groq + Llama 3.3 instead of OpenAI directly?
+
+Groq exposes an OpenAI-compatible REST API, so the `openai` npm package works with zero code changes — only `baseURL` and the model name differ. Llama 3.3 70B on Groq offers:
+- **Free tier** with generous rate limits — no credit card required for evaluation
+- **Faster inference** than hosted OpenAI for similarly-sized prompts
+- **JSON mode** (`response_format: { type: 'json_object' }`) is fully supported
+
+The entire AI integration would work equally well against `gpt-4o-mini` by changing two strings in `aiService.ts`.
 
 ### Why React Query for server state?
 

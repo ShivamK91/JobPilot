@@ -88,7 +88,7 @@ const Field = ({ id, label, required, children }: FieldProps): JSX.Element => (
 const inputClass =
   'w-full bg-white border text-slate-800 placeholder-slate-400 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-0 transition';
 
-const inputStyle = { borderColor: '#e2e8f0' };
+const inputStyle = { borderColor: 'var(--border)' };
 
 // ── Main Component ────────────────────────────────────────────────────────────
 
@@ -215,10 +215,10 @@ const AddApplicationModal = ({ isOpen, onClose }: AddApplicationModalProps): JSX
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
       onClick={handleOverlayClick}
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col" style={{ border: '1px solid #e2e8f0' }}>
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col" style={{ border: '1px solid var(--border)' }}>
 
         {/* ── Header ── */}
-        <div className="flex items-center justify-between px-6 py-4 border-b shrink-0" style={{ borderColor: '#f1f5f9' }}>
+        <div className="flex items-center justify-between px-6 py-4 border-b shrink-0" style={{ borderColor: 'var(--border)' }}>
           <h2 className="text-lg font-semibold text-slate-800">Add Application</h2>
           <button
             onClick={onClose}
@@ -278,7 +278,7 @@ const AddApplicationModal = ({ isOpen, onClose }: AddApplicationModalProps): JSX
             </button>
           </section>
 
-          <div className="border-t" style={{ borderColor: '#f1f5f9' }} />
+          <div className="border-t" style={{ borderColor: 'var(--border)' }} />
 
           {/* ═══ SECTION 2 — Application Form ═══ */}
           <section>
@@ -407,7 +407,7 @@ const AddApplicationModal = ({ isOpen, onClose }: AddApplicationModalProps): JSX
           {/* ═══ SECTION 3 — Resume Suggestions ═══ */}
           {resumeSuggestions.length > 0 && (
             <>
-              <div className="border-t" style={{ borderColor: '#f1f5f9' }} />
+              <div className="border-t" style={{ borderColor: 'var(--border)' }} />
               <section>
                 <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: '#534AB7' }}>
                   AI Resume Suggestions
@@ -445,7 +445,7 @@ const AddApplicationModal = ({ isOpen, onClose }: AddApplicationModalProps): JSX
         </div>
 
         {/* ── Footer ── */}
-        <div className="px-6 py-4 border-t shrink-0 space-y-3" style={{ borderColor: '#f1f5f9' }}>
+        <div className="px-6 py-4 border-t shrink-0 space-y-3" style={{ borderColor: 'var(--border)' }}>
           {formError && (
             <p className="text-red-500 text-xs">{formError}</p>
           )}

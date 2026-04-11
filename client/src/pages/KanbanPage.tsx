@@ -8,6 +8,7 @@ import AddApplicationModal from '../components/AddApplicationModal';
 import ApplicationModal from '../components/ApplicationModal';
 import { useAuth } from '../hooks/useAuth';
 import { useToast } from '../components/Toast';
+import { useTheme } from '../hooks/useTheme';
 
 type Status = Application['status'];
 
@@ -110,18 +111,29 @@ const KanbanPage = (): JSX.Element => {
     moveApplication({ id: draggableId, status: newStatus });
   };
 
+  const { theme, toggleTheme } = useTheme();
+
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#f1f5f9' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg)' }}>
 
       {/* ── Navbar ────────────────────────────────────────────────────────── */}
-      <nav className="bg-white border-b px-6 py-3 flex items-center justify-between shrink-0 shadow-sm" style={{ borderColor: '#e2e8f0' }}>
-        <h1 className="text-xl font-bold tracking-tight text-white" style={{ color: 'inherit' }}>
-          <span className="text-slate-900">Job</span>
-          <span style={{ color: '#534AB7' }}>Pilot</span>
+      <nav className="bg-white dark:bg-slate-900 border-b px-6 py-3 flex items-center justify-between shrink-0 shadow-sm" style={{ borderColor: 'var(--border)' }}>
+        <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          <span>Job</span>
+          <span className="text-[#534AB7]">Pilot</span>
         </h1>
 
         <div className="flex items-center gap-4">
+          <button
+            id="theme-toggle-btn"
+            type="button"
+            onClick={toggleTheme}
+            className="text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition"
+          >
+            {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          </button>
+
           <button
             id="add-application-btn"
             onClick={() => setIsAddModalOpen(true)}
@@ -132,12 +144,12 @@ const KanbanPage = (): JSX.Element => {
           </button>
 
           <div className="flex items-center gap-3">
-            <span className="text-slate-500 text-sm hidden sm:block">{userEmail}</span>
+            <span className="text-slate-500 dark:text-slate-300 text-sm hidden sm:block">{userEmail}</span>
             <button
               id="logout-btn"
               onClick={logout}
-              className="text-slate-500 hover:text-slate-800 text-sm border px-3 py-1.5 rounded-lg"
-              style={{ borderColor: '#e2e8f0' }}
+              className="text-slate-500 dark:text-slate-200 hover:text-slate-800 dark:hover:text-white text-sm border px-3 py-1.5 rounded-lg"
+              style={{ borderColor: 'var(--border)' }}
             >
               Logout
             </button>
@@ -146,7 +158,7 @@ const KanbanPage = (): JSX.Element => {
       </nav>
 
       {/* ── Stats bar ─────────────────────────────────────────────────────── */}
-      <div className="bg-white border-b px-6 py-3 flex items-center gap-3 shrink-0 shadow-sm overflow-x-auto" style={{ borderColor: '#e2e8f0' }}>
+      <div className="bg-white dark:bg-slate-900 border-b px-6 py-3 flex items-center gap-3 shrink-0 shadow-sm overflow-x-auto" style={{ borderColor: 'var(--border)' }}>
         <StatCard label="Total" value={total}      accent="#534AB7" />
         <StatCard label="Active" value={active}    accent="#378ADD" />
         <StatCard label="Interviews" value={interviews} accent="#BA7517" />

@@ -73,17 +73,16 @@ const appToForm = (app: Application): EditForm => ({
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 const inputClass =
-  'w-full bg-white border text-slate-800 placeholder-slate-400 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-0 transition';
+  'w-full bg-white border text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-0 transition';
 
-const inputStyle = { borderColor: '#e2e8f0' };
-
+const inputStyle = { borderColor: 'var(--border)' };
 const SectionLabel = ({ children }: { children: React.ReactNode }): JSX.Element => (
   <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5">
     {children}
   </p>
 );
 
-const SkillChips = ({ skills, color = 'blue' }: { skills: string[]; color?: 'blue' | 'teal' }): JSX.Element => {
+const SkillChips = ({ skills, color = 'blue' }: { skills: string[]; color?: 'blue' | 'teal' | 'indigo' }): JSX.Element => {
   const style =
     color === 'teal'
       ? { background: '#f0fdfa', color: '#0f766e', border: '1px solid #99f6e4', fontSize: '10px' }
@@ -330,8 +329,8 @@ const ApplicationModal = ({ application, isOpen, onClose }: ApplicationModalProp
             </button>
             <button
               onClick={() => setMode('view')}
-              className="text-slate-600 hover:text-slate-800 text-sm px-4 py-2 rounded-lg border transition-colors"
-              style={{ borderColor: '#e2e8f0' }}
+              className="text-slate-600 dark:text-slate-200 hover:text-slate-800 dark:hover:text-white text-sm px-4 py-2 rounded-lg border transition-colors"
+              style={{ borderColor: 'var(--border)' }}
             >
               Cancel
             </button>
@@ -446,7 +445,7 @@ const ApplicationModal = ({ application, isOpen, onClose }: ApplicationModalProp
 
   // ── Footer per mode ──────────────────────────────────────────────────────────
   const FooterView = (
-    <div className="flex items-center justify-between px-6 py-4 border-t shrink-0" style={{ borderColor: '#f1f5f9' }}>
+    <div className="flex items-center justify-between px-6 py-4 border-t shrink-0" style={{ borderColor: 'var(--border)' }}>
       <button
         id="delete-app-btn"
         onClick={() => setMode('confirm-delete')}
@@ -467,7 +466,7 @@ const ApplicationModal = ({ application, isOpen, onClose }: ApplicationModalProp
   );
 
   const FooterEdit = (
-    <div className="flex items-center justify-between px-6 py-4 border-t shrink-0" style={{ borderColor: '#f1f5f9' }}>
+    <div className="flex items-center justify-between px-6 py-4 border-t shrink-0" style={{ borderColor: 'var(--border)' }}>
       {formError ? (
         <p className="text-red-500 text-xs">{formError}</p>
       ) : <span />}
@@ -475,8 +474,8 @@ const ApplicationModal = ({ application, isOpen, onClose }: ApplicationModalProp
         <button
           id="edit-cancel-btn"
           onClick={() => { setMode('view'); setFormError(null); setForm(appToForm(application)); }}
-          className="text-slate-500 hover:text-slate-700 text-sm px-4 py-2 rounded-lg border transition-colors"
-          style={{ borderColor: '#e2e8f0' }}
+          className="text-slate-500 dark:text-slate-200 hover:text-slate-700 dark:hover:text-white text-sm px-4 py-2 rounded-lg border transition-colors"
+          style={{ borderColor: 'var(--border)' }}
         >
           Cancel
         </button>
@@ -501,10 +500,10 @@ const ApplicationModal = ({ application, isOpen, onClose }: ApplicationModalProp
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
       onClick={handleOverlayClick}
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col" style={{ border: '1px solid #e2e8f0' }}>
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col" style={{ border: '1px solid var(--border)' }}>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b shrink-0" style={{ borderColor: '#f1f5f9' }}>
+        <div className="flex items-center justify-between px-6 py-4 border-b shrink-0" style={{ borderColor: 'var(--border)' }}>
           <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
             {mode === 'edit' ? 'Edit Application' : 'Application Detail'}
           </span>

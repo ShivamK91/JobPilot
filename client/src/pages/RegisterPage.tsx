@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 const inputClass =
-  'w-full bg-white border text-slate-800 placeholder-slate-400 rounded-lg px-4 py-2.5 text-sm transition focus:outline-none focus:ring-0';
+  'w-full bg-white border text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 rounded-lg px-4 py-2.5 text-sm transition focus:outline-none focus:ring-0';
 
 const RegisterPage = (): JSX.Element => {
   const { register, isLoading, error } = useAuth();
@@ -46,7 +46,7 @@ const RegisterPage = (): JSX.Element => {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: '#f1f5f9' }}
+      style={{ background: 'var(--bg)' }}
     >
       <div className="w-full max-w-[420px]">
 
@@ -62,7 +62,7 @@ const RegisterPage = (): JSX.Element => {
         {/* Card */}
         <div
           className="bg-white rounded-2xl p-8 shadow-sm"
-          style={{ border: '1px solid #e2e8f0' }}
+          style={{ border: '1px solid var(--border)' }}
         >
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>
 
@@ -87,7 +87,7 @@ const RegisterPage = (): JSX.Element => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 className={inputClass}
-                style={{ borderColor: '#e2e8f0' }}
+                style={{ borderColor: 'var(--border)' }}
               />
             </div>
 
@@ -105,7 +105,7 @@ const RegisterPage = (): JSX.Element => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Min. 6 characters"
                 className={inputClass}
-                style={{ borderColor: '#e2e8f0' }}
+                style={{ borderColor: 'var(--border)' }}
               />
             </div>
 
@@ -123,7 +123,7 @@ const RegisterPage = (): JSX.Element => {
                 onChange={(e) => setConfirm(e.target.value)}
                 placeholder="••••••••"
                 className={inputClass}
-                style={{ borderColor: '#e2e8f0' }}
+                style={{ borderColor: 'var(--border)' }}
               />
             </div>
 

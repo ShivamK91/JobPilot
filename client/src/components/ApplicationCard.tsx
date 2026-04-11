@@ -45,12 +45,12 @@ const ApplicationCard = ({
               : provided.draggableProps.style?.transform,
             transition: snapshot.isDragging ? undefined : 'transform 0.15s, box-shadow 0.15s, border-color 0.15s',
             borderRadius: '10px',
-            background: '#ffffff',
+            background: 'var(--surface)',
             border: snapshot.isDragging
               ? '1.5px solid #534AB7'
               : hovered
               ? '1.5px solid #a5b4fc'
-              : '1.5px solid #e2e8f0',
+              : '1.5px solid var(--border)',
             boxShadow: snapshot.isDragging
               ? '0 8px 24px rgba(83,74,183,0.25)'
               : hovered

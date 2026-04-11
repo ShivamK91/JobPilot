@@ -18,14 +18,14 @@ const KanbanColumn = ({
   return (
     <div
       className="flex flex-col w-72 shrink-0 rounded-xl shadow-sm overflow-hidden"
-      style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}
+      style={{ background: 'var(--surface-soft)', border: '1px solid var(--border)' }}
     >
       {/* Colored top accent bar */}
       <div style={{ height: '3px', background: accentHex }} />
 
       {/* Column header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#e2e8f0' }}>
-        <h2 className="text-sm font-semibold text-slate-700 tracking-wide">{title}</h2>
+      <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-100 tracking-wide">{title}</h2>
         <span
           className="text-xs font-bold px-2.5 py-0.5 rounded-full min-w-[1.5rem] text-center text-white"
           style={{ background: accentHex }}
